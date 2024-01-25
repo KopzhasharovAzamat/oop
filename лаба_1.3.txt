@@ -1,0 +1,61 @@
+// 1.3
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Employee{
+    string fullname;
+    int age;
+    string specialty;
+    float salary;
+};
+
+int main() {
+    int n;
+    cout << "Enter number of factories: " << endl;
+    cin >> n;
+    vector<vector<Employee>> factories;
+    int turnersAmount = 0, locksmithsAmount = 0;
+    for(int i = 0; i < n; i++) {
+
+        cout << "Information for factory #" << i+1 << endl
+             << "Enter factory's employee amount: " << endl;
+        int m;
+        cin >> m;
+        vector<Employee> employees;
+        for(int j = 0; j < m; j++){
+            Employee emp;
+            cout << "Enter " << j+1 << " employee information in next format: fullname, age, specialty, salary: " << endl;
+            cin >> emp.fullname >> emp.age >> emp.specialty >> emp.salary;
+            employees.push_back(emp);
+        }
+
+        int lCount = 0, tCount = 0;
+        for(auto emp : employees){
+            if(emp.specialty == "turner" || emp.specialty == "Turner") tCount++;
+            else if(emp.specialty == "locksmith" || emp.specialty == "Locksmith") lCount++;
+        }
+        cout << "In factory #" << i+1 << ":" << endl << lCount << " of locksmiths;" << endl << tCount << " of turners." << endl;
+        turnersAmount += tCount;
+        locksmithsAmount += lCount;
+        factories.push_back(employees);
+    }
+    cout << "Total of locksmiths: " << locksmithsAmount << endl << "Total of turners: " << turnersAmount << endl;
+
+    return 0;
+}
+
+/*
+2
+5
+aaa 10 turner 100
+bbb 20 turnerr 200
+ccc 30 locksmith 300
+ddd 40 turner 400
+eee 50 locksmith 500
+4
+fff 60 locksmith 600
+ggg 70 locksmith 700
+hhh 80 locksmit 800
+iii 90 turner 900
+ */

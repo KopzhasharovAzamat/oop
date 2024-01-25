@@ -1,0 +1,68 @@
+// 1.2
+#include <iostream>
+using namespace std;
+
+double power(double n, int p = 2) {
+    double ans = n;
+    while (--p) ans *= n;
+    return ans;
+}
+
+short power(short n, int p = 2) {
+    short ans = n;
+    while (--p) ans *= n;
+    return ans;
+}
+
+long power(long n, int p = 2) {
+    long ans = n;
+    while (--p) ans *= n;
+    return ans;
+}
+
+float power(float n, int p = 2) {
+    float ans = n;
+    while (--p) ans *= n;
+    return ans;
+}
+
+int power(char n, int p = 2) {
+    if((int)n >= 48 && (int)n <= 57){
+        int ans = (int)(n-48), exp = (int)(n-48);
+        while(--p) ans *= exp;
+        return ans;
+    }else if(((int)n >= 65 && (int)n <= 90) || ((int)n >= 97 && (int)n <= 122)){
+        int ans = (int)n, exp = (int)n;
+        while(--p) ans *= exp;
+        return ans;
+    }else{
+        cout << "forbidden action: ";
+        return 0;
+    }
+}
+
+int main() {
+    int exp;
+    short short1;
+    long long1;
+    float float1;
+    double double1;
+    char char1;
+
+    cin >> exp >> short1 >> long1 >> float1  >> double1  >> char1 ;
+    cout << "short: " << power(short1 ,exp) << endl;
+    cout << "long: " << power(long1 ,exp) << endl;
+    cout << "float: " << power(float1,exp) << endl;
+    cout << "double: " << power(double1 ,exp) << endl;
+    cout << "char: " << power(char1 ,exp) << endl;
+
+    return 0;
+}
+
+/*
+ 2 4 100000 3.14 3.141592 A
+ 2 4 100000 3.14 3.141592 z
+ 3 4 100000 3.14 3.141592 5
+ 3 4 100000 3.14 3.141592 z
+ 3 4 100000 3.14 3.141592 !
+ */

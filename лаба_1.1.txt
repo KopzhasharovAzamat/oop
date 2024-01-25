@@ -1,0 +1,34 @@
+// 1.1
+#include <iostream>
+using namespace std;
+
+double power(double n, int p = 2);
+
+int main() {
+    int check;
+    int n, p, result;
+    cout << "Will you enter power number? (default = 2)" << endl
+         << "0. No \nAny other number. Yes" << endl;
+    cin >> check;
+    if(check){
+        cout << "Enter n (base), p (exponent): " << endl;
+        cin >> n >> p;
+        result = power(n, p);
+        if(p == 2) cout << "For what? Why?" << endl;
+    }else{
+        cout << "Enter n (base): " << endl;
+        cin >> n;
+        p = 2;
+        result = power(n);
+    }
+    cout << "n: " << n << endl
+         << "p: " << p << endl
+         << "n^p: " << result << endl;
+    return 0;
+}
+
+double power(double n, int p) {
+    double ans = n;
+    while(--p) ans *= n;
+    return ans;
+}
