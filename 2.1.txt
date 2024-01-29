@@ -1,0 +1,51 @@
+// 2.1
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+class Aeroflot{
+public:
+    int flightNumber;
+    int registrationSection;
+    string departure;
+    string arrivalTime;
+    string destination;
+    string departureTime;
+    Aeroflot(int number, const string& departure, const string& arrival,
+             const string& destination, const string& departureTime, int section)
+            : flightNumber(number), departure(departure), arrivalTime(arrival), destination(destination),
+               departureTime(departureTime), registrationSection(section) {}
+    void outputFlightDetails() const {
+        cout << flightNumber << " " << departure << " " << arrivalTime << " " << destination << " " << departureTime << " " << registrationSection << endl;
+    }
+};
+bool compareFlights(const Aeroflot& f1, const Aeroflot& f2) {
+    return f1.destination < f2.destination;
+}
+int main() {
+    int numOfFlights;
+    cout << "Enter number of flights: " << endl;
+    cin >> numOfFlights;
+    vector<Aeroflot> Flights;
+    cout << "Enter flights in following order:" << endl;
+    cout << "Flight number, departure, arrival time, destination, departure time, registration section" << endl;
+    for(int i = 0; i < numOfFlights; i++){
+        int number, section;
+        string dep, arrTime, dest, depTime;
+        cin >> number >> dep >> arrTime >> dest >> depTime >> section;
+        Flights.emplace_back(number, dep, arrTime, dest, depTime, section);
+    }
+    sort(Flights.begin(), Flights.end(), compareFlights);
+    for (const auto& flight : Flights) {
+        flight.outputFlightDetails();
+    }
+    return 0;
+}
+/*
+5
+1 Bishkek 10:10 Osh 10:50 123
+2 Bishkek 12:00 Istanbul 15:30 332
+3 Bishkek 13:20 Amsterdam 16:00 222
+4 Bishkek 11:00 Tokyo 13:00 412
+5 Bishkek 10:30 Moscow 14:50 322
+ */

@@ -1,0 +1,129 @@
+// 2.1
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Student{
+public:
+    string lastName;
+    string firstName;
+    string phoneNumber;
+    string birthDate;
+
+    Student(const string& ln, const string& fn, const string& pn, const string& bd)
+    : lastName(ln), firstName(fn), phoneNumber(pn), birthDate(bd) {}
+
+};
+
+class StudentGroup{
+private:
+    vector<Student> students;
+public:
+    void addStudent(const Student& student) {
+        students.push_back(student);
+    }
+
+    void removeStudent(const string& lastName) {
+        students.erase(remove_if(students.begin(), students.end(),
+                                      [lastName](const Student& student) { return student.lastName == lastName; }),
+                       students.end());
+    }
+
+    Student* findStudentByLastName(const string& lastName) {
+        auto iter = find_if(students.begin(), students.end(),
+                               [lastName](const Student& student) { return student.lastName == lastName; });
+
+        return (iter != students.end()) ? &(*iter) : nullptr;
+    }
+
+    void sortStudentsByLastName() {
+        sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
+            return a.lastName < b.lastName;
+        });
+    }
+
+    void displayAllStudents() const {
+        cout << "Last name First name  Birthdate  Phone number " << endl;
+        for (const auto& student : students) {
+            cout << student.lastName << " " << student.firstName << " "
+                      << student.birthDate << " " << student.phoneNumber << endl;
+        }
+    }
+};
+
+int main() {
+    StudentGroup group;
+    int n;
+    do {
+        cout << "Choose action:" << endl
+                << "1. Add student" << endl
+                << "2. Delete student" << endl
+                << "3. Search student by lastname" << endl
+                << "4. Sort students by lastname" << endl
+                << "5. Print all students info" << endl
+                << "0. Exit" << endl;
+        cin >> n;
+        switch (n) {
+            case 1:{
+                string ln, fn, pn, bd;
+                cout << "Input student's data: lastname, firstname, phone number, birthdate" << endl;
+                cin >> ln >> fn >> pn >> bd;
+                group.addStudent(Student(ln, fn, pn, bd));
+                break;
+            }
+            case 2: {
+                string deadman;
+                cout << "Enter student's lastname you want to delete" << endl;
+                cin >> deadman;
+                group.removeStudent(deadman);
+                break;
+            }
+            case 3: {
+                string target;
+                cout << "Enter student's lastname you want to search" << endl;
+                cin >> target;
+                Student *found = group.findStudentByLastName(target);
+                if (found) {
+                    cout << "Student found:" << endl
+                         << "Lastname: " << found->lastName << endl
+                         << "Firstname: " << found->firstName << endl
+                         << "Phone number: " << found->phoneNumber << endl
+                         << "Birthdate: " << found->birthDate << endl;
+                } else {
+                    cout << "Student wasn't found" << endl;
+                }
+                break;
+            }
+            case 4: {
+                group.sortStudentsByLastName();
+                cout << "Students are sorted" << endl;
+                break;
+            }
+            case 5: {
+                group.displayAllStudents();
+                break;
+            }
+            case 0: {
+                cout << "Shutting down" << endl;
+                break;
+            }
+            default: {
+                cout << "Incorrect input" << endl;
+            }
+        }
+
+    } while(n);
+
+    return 0;
+}
+/*
+ 1
+ Kopzhasharov Azamat 666 28.04.03
+ 1
+ Zakirov Mustafa 322 30.09.03
+ 1
+ Urmanbetov Sultan 228 06.08.03
+ 1
+ test testt 123 12.12.12
+ */
