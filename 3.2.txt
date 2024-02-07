@@ -1,0 +1,70 @@
+// 3.2
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Nomenclature {
+private:
+    string productName;
+    double wholesalePrice;
+    double retailMarkup;
+    int quantityInStock;
+
+public:
+    // Конструктор с параметрами
+    Nomenclature(const string& pn, double wp, double rm, int q)
+            : productName(pn), wholesalePrice(wp), retailMarkup(rm), quantityInStock(q) {}
+
+    // Деструктор
+    ~Nomenclature() {
+        cout << "Product '" << productName << "' was deleted.   " << endl;
+    }
+
+    // Функция для подсчета чистого дохода
+    double calculateNetIncome(int soldQuantity) const {
+        double revenue = soldQuantity * (wholesalePrice * (retailMarkup / 100 + 1.0) );
+        double expenses = soldQuantity * wholesalePrice;
+        double netIncome = revenue - expenses;
+        cout << "Net income from sales " << soldQuantity << " " << this->productName << " items: $" << netIncome << endl;
+        return netIncome;
+    }
+
+    // Функция для вывода данных о товаре на экран
+    void displayProductDetails() const {
+        cout << "Product name: " << productName << endl;
+        cout << "Wholesale price: $" << wholesalePrice << endl;
+        cout << "Retail markup: " << retailMarkup << "%" << endl;
+        cout << "Quantity in stock: " << quantityInStock << " items" << endl;
+    }
+};
+
+int main() {
+    vector<Nomenclature> market;
+    cout << "Enter number of items in your market: " << endl;
+    int n;
+    cin >> n;
+    cout << "Enter " << n << " items in your market in following order: " << endl;
+    cout << "Product name, Wholesale price, Retail markup, Quantity in stock" << endl;
+    for(int i = 0; i < n; i++){
+        string pn;
+        double wp, rm;
+        int q;
+        cin >> pn >> wp >> rm >> q;
+        market.emplace_back(pn, wp, rm, q);
+    }
+    for(Nomenclature &item : market){
+        item.displayProductDetails();
+        // item.calculateNetIncome(10);
+        double lol = item.calculateNetIncome(10);
+    }
+    return 0;
+}
+
+/*
+ 3
+ Phone 500 20 50
+ Laptop 1500 30 10
+ Tablet 750 15 30
+ */

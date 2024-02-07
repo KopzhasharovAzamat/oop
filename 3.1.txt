@@ -1,0 +1,59 @@
+// 3.1
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+using namespace std;
+
+class Timer{
+private:
+    int seconds;
+
+public:
+    // constructor for int seconds
+    Timer(int sec) : seconds(sec) {}
+
+    // constructor for "min:sec"
+    Timer(const string &timeString) {
+        int minutes, seconds;
+        sscanf(timeString.c_str(), "%d:%d", &minutes, &seconds); // c.str() not to copy entire string - memory efficient usage
+        this->seconds = minutes * 60 + seconds;
+    }
+
+    // constructor for int minutes, int seconds
+    Timer(int min, int sec): seconds(min * 60 + sec) {}
+
+    void run(){
+        clock_t start = clock();
+
+        while (seconds > 0) {
+            clock_t current = clock();
+            double elapsedSeconds = static_cast<double>(current - start) / CLOCKS_PER_SEC;
+
+            if (elapsedSeconds >= 1.0) {
+                seconds--;
+                start = current;
+                int minutes = seconds / 60;
+                int remainingSeconds = seconds % 60;
+
+                cout << setfill('0') << setw(2) << minutes << ":"
+                          << setfill('0') << setw(2) << remainingSeconds << endl;
+            }
+        }
+
+        cout << "Stop time!" << endl;
+    }
+};
+
+int main() {
+
+    Timer timer1(2);
+    timer1.run();
+
+    Timer timer2("03:30");
+    timer2.run();
+
+    Timer timer3(2, 45);
+    timer3.run();
+
+    return 0;
+}

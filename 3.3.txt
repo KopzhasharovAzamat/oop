@@ -1,0 +1,91 @@
+// 3.3
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+class Soft {
+private:
+    string programName;
+    string developer;
+    double diskSpace;
+    tm licenseExpirationDate;  // Используем структуру tm для хранения даты
+
+public:
+    // Конструктор с параметрами
+    Soft(const string& name, const string& dev, double space, int year, int month, int day)
+            : programName(name), developer(dev), diskSpace(space) {
+        licenseExpirationDate.tm_year = year - 1900;  // tm_year отсчитывается от 1900 года
+        licenseExpirationDate.tm_mon = month - 1;     // tm_mon отсчитывается от 0 (январь)
+        licenseExpirationDate.tm_mday = day;
+        licenseExpirationDate.tm_hour = 0;
+        licenseExpirationDate.tm_min = 0;
+        licenseExpirationDate.tm_sec = 0;
+    }
+
+    // Деструктор
+    ~Soft() {
+        cout << "Software '" << programName << "' was deleted." << endl;
+    }
+
+    // Функция для подсчета количества дней до завершения лицензии
+    int daysUntilLicenseExpiration() const {
+        time_t now = time(nullptr);  // Получаем текущее время в секундах с 1 января 1970 года
+        tm currentTime = *localtime(&now);  // Создаем копию текущего времени
+        tm expirationDate = licenseExpirationDate;  // Создаем копию даты окончания лицензии
+
+        // Разница в секундах между текущим временем и датой завершения лицензии
+        time_t difference = mktime(&expirationDate) - mktime(&currentTime);
+
+        // Преобразуем разницу в дни
+        int days = difference / (60 * 60 * 24);
+        if(difference >= 0) cout << days << " before license for " << this->programName << " expires" << endl;
+        else cout << this->programName << " has already expired, it was " << days << " days ago"  << endl;
+
+
+        return days;
+    }
+    
+    // Функция для вывода данных о программном обеспечении на экран
+    void displaySoftwareDetails() const {
+        cout << "Software name: " << programName << endl;
+        cout << "Developer: " << developer << endl;
+        cout << "Disk space: " << diskSpace << " MB" << endl;
+        cout << "License expritation date: " << put_time(&licenseExpirationDate, "%Y-%m-%d") << endl;
+    }
+};
+
+int main() {
+
+    vector<Soft> software;
+
+    cout << "Enter number of softwares: " << endl;
+    int n;
+    cin >> n;
+    cout << "Enter " << n << " software in following order: " << endl;
+    cout << "Name, Developer, Disk space required, License expiration date (year, month, day)" << endl;
+    for(int i = 0; i < n; i++){
+        string name, dev;
+        double disk;
+        int year, month, day;
+        cin >> name >> dev >> disk >> year >> month >> day;
+        software.emplace_back(name, dev, disk, year, month, day);
+    }
+
+    for(auto &iter : software){
+        iter.displaySoftwareDetails();
+        // iter.daysUntilLicenseExpiration();
+        int foo = iter.daysUntilLicenseExpiration();
+    }
+
+    return 0;
+}
+/*
+ 3
+ Office MS 1000 2000 01 01
+ steam valve 50 2040 4 3
+ clion jetbrains 10 2100 12 12
+ */
