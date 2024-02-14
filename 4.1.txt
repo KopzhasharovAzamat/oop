@@ -1,0 +1,71 @@
+// 4.1
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Kamaz {
+private:
+    int speed;
+    string name;
+public:
+    Kamaz(int givenSpeed, const string& givenName): speed(givenSpeed), name(givenName){}
+    ~Kamaz(){
+        cout << "Kamaz " << name << " is deleted" << endl;
+    }
+    void display(){
+        cout << "Speed of Kamaz model " << name << " is " << speed << " km/h" << endl;
+    }
+    int getSpeed(){
+        return speed;
+    }
+    string getName(){
+        return name;
+    }
+};
+
+class Tatra {
+private:
+    int speed;
+    string name;
+public:
+    Tatra(int givenSpeed, const string& givenName): speed(givenSpeed), name(givenName){}
+    ~Tatra(){
+        cout << "Kamaz " << name << " is deleted" << endl;
+    }
+    void display(){
+        cout << "Speed of Tatra model " << name << " is " << speed << " km/h" << endl;
+    }
+    int getSpeed(){
+        return speed;
+    }
+    string getName(){
+        return name;
+    }
+};
+
+int FrCreater(Kamaz k, Tatra t){
+    if(k.getSpeed() > t.getSpeed()) return 1;
+    else if(k.getSpeed() == t.getSpeed()) return 0;
+    else return -1;
+}
+
+int main() {
+
+    Kamaz k1(100, "k1"), k2(150, "k2"), k3(200, "k3");
+    Tatra t1(200, "t1"), t2(160, "t2"), t3(100, "t3");
+
+    k1.display();
+    k2.display();
+    k3.display();
+    t1.display();
+    t2.display();
+    t3.display();
+
+    int result1 = FrCreater(k1, t1), result2 = FrCreater(k2, t2), result3 = FrCreater(k3, t3);
+    if((result1 + result2 + result3) > 0) cout << "Winner is Kamaz!" << endl;
+    else if((result1 + result2 + result3) < 0) cout << "Winner is Tatra!" << endl;
+    else cout << "Draw!" << endl;
+
+    return 0;
+}
