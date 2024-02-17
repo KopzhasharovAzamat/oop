@@ -1,0 +1,93 @@
+// 5.1
+#include <iostream>
+#include <limits>
+#include <exception>
+
+using namespace std;
+
+class Int{
+private:
+    int value;
+public:
+    Int(int val) : value(val) {}
+
+    Int operator+(const Int& other) const {
+        long double result = static_cast<long double>(value) + other.value;
+        if(result < numeric_limits<int>::min() || result > numeric_limits<int>::max()){
+            throw overflow_error("Arithmetic overflow occurred by addition");
+        }
+        return Int(static_cast<int>(result));
+    }
+    Int operator-(const Int& other) const {
+        long double result = static_cast<long double>(value) - other.value;
+        if(result < numeric_limits<int>::min() || result > numeric_limits<int>::max()){
+            throw overflow_error("Arithmetic overflow occurred by subtraction");
+        }
+        return Int(static_cast<int>(result));
+    }
+    Int operator*(const Int& other) const {
+        long double result = static_cast<long double>(value) * other.value;
+        if(result < numeric_limits<int>::min() || result > numeric_limits<int>::max()){
+            throw overflow_error("Arithmetic overflow occurred by multiplication");
+        }
+        return Int(static_cast<int>(result));
+    }
+    Int operator/(const Int& other) const {
+        if(other.value == 0){
+            throw invalid_argument("Division by zero");
+        }
+        return Int(value / other.value);
+    }
+
+    // prefix
+    Int& operator++(){
+        if(value == numeric_limits<int>::max()){
+            throw overflow_error("Arithmetic overflow occurred by prefix form");
+        }
+        ++value;
+        return *this;
+    }
+    // postfix
+    Int operator++(int){
+        Int temp = *this;
+        ++(*this);
+        return temp;
+    }
+
+    // Output operator
+    friend ostream& operator<<(ostream& os, const Int& num) {
+        os << num.value;
+        return os;
+    }
+
+};
+
+int main() {
+    try {
+        Int a = 14;
+        Int b = 2;
+
+        // Test arithmetic operations
+        Int sum = a + b;
+        Int difference = a - b;
+        Int product = a * b;
+        Int quotient = a / b;
+
+        // Test increment operators
+        ++a;
+        Int c = b++;
+
+        std::cout << "Sum: " << sum << std::endl;
+        std::cout << "Difference: " << difference << std::endl;
+        std::cout << "Product: " << product << std::endl;
+        std::cout << "Quotient: " << quotient << std::endl;
+        std::cout << "Prefix Increment: " << a << std::endl;
+        std::cout << "Postfix Increment: " << c << std::endl;
+    } catch (const exception& e) {
+        std::cerr << "Exception caught: " << e.what() << std::endl;
+    }
+    return 0;
+}
+/*
+Int a = std::numeric_limits<int>::max();
+ */

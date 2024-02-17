@@ -1,0 +1,92 @@
+// 5.1
+#include <iostream>
+using namespace std;
+
+class Fraction {
+private:
+    double chislo;
+
+public:
+    // Constructors
+    Fraction() : chislo(0) {}
+    Fraction(double value) : chislo(value) {}
+
+    // Binary arithmetic operators
+    Fraction operator+(const Fraction& other) const {
+        return Fraction(chislo + other.chislo);
+    }
+
+    Fraction operator-(const Fraction& other) const {
+        return Fraction(chislo - other.chislo);
+    }
+
+    Fraction operator*(const Fraction& other) const {
+        return Fraction(chislo * other.chislo);
+    }
+
+    Fraction operator/(const Fraction& other) const {
+        if (other.chislo == 0) {
+            std::cerr << "Division by zero\n";
+            exit(1);
+        }
+        return Fraction(chislo / other.chislo);
+    }
+
+    // Unary increment operators
+    Fraction& operator++() { // Prefix increment
+        chislo++;
+        return *this;
+    }
+
+    Fraction operator++(int) { // Postfix increment
+        Fraction temp = *this;
+        ++(*this);
+        return temp;
+    }
+
+    // Friend function to overload operator+ for mixed-mode arithmetic
+    friend Fraction operator+(const Fraction& fraction, double value) {
+        return Fraction(fraction.chislo + value);
+    }
+
+    friend Fraction operator*(double value, const Fraction& fraction) {
+        return Fraction(value * fraction.chislo);
+    }
+
+    // Output operator
+    friend ostream& operator<<(ostream& os, const Fraction& fraction) {
+        os << fraction.chislo;
+        return os;
+    }
+};
+
+int main() {
+    Fraction a(3.0), b(2.5);
+    double c = 4.0;
+
+    // Test arithmetic operations with fractions
+    Fraction sum = a + b;
+    Fraction difference = a - b;
+    Fraction product = a * b;
+    Fraction quotient = a / b;
+
+    // Test mixed-mode arithmetic
+    Fraction mixed_sum = a + c;
+    Fraction mixed_product = c * b;
+
+    // Test increment operators
+    ++a;
+    Fraction post_increment = b++;
+
+    // Display results
+    cout << "Sum: " << sum << endl;
+    cout << "Difference: " << difference << endl;
+    cout << "Product: " << product << endl;
+    cout << "Quotient: " << quotient << endl;
+    cout << "Mixed sum: " << mixed_sum << endl;
+    cout << "Mixed product: " << mixed_product << endl;
+    cout << "Prefix Increment: " << a << endl;
+    cout << "Postfix Increment: " << post_increment << endl;
+
+    return 0;
+}

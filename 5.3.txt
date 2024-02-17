@@ -1,0 +1,40 @@
+// 5.3
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+private:
+    double length;
+    double width;
+
+public:
+    Rectangle(double l, double w) : length(l), width(w) {}
+    Rectangle(double size) : length(size), width(size) {}
+
+    // Method to calculate area of rectangle
+    double rect_area(double l, double w) {
+        return l * w;
+    }
+
+    // Overloaded method for rectangle
+    double rect_area() {
+        return length * width;
+    }
+
+    // Overloaded method for square
+    double rect_area(double side) {
+        return side * side;
+    }
+};
+
+int main() {
+    Rectangle rectangle(4.0, 3.0);
+    Rectangle square(5.0);
+
+    // Calculate area of rectangle
+    cout << "Area of rectangle: " << rectangle.rect_area() << endl;
+
+    // Calculate area of square
+    cout << "Area of square: " << square.rect_area(5.0) << endl;
+    return 0;
+}
