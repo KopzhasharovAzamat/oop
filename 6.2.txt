@@ -1,0 +1,85 @@
+// 6.2
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+// Класс родителя Display
+class Display {
+protected:
+    char type[32];
+    long colors;
+    int x_resolution;
+    int y_resolution;
+
+public:
+    // Конструктор с аргументами
+    Display(char _type[], long _colors, int _x_resolution, int _y_resolution) {
+        strcpy(type, _type);
+        colors = _colors;
+        x_resolution = _x_resolution;
+        y_resolution = _y_resolution;
+    }
+
+    // Размещение информации о классе-родителе на консоли
+    void displayInfo() {
+        cout << "Display Information:" << endl;
+        cout << "Type: " << type << endl;
+        cout << "Colors: " << colors << endl;
+        cout << "Resolution: " << x_resolution << "x" << y_resolution << endl << endl;
+    }
+};
+
+// Класс родителя MotherBoard
+class MotherBoard {
+protected:
+    int processor;
+    int speed;
+    int RAM;
+
+public:
+    // Конструктор с аргументами
+    MotherBoard(int _processor, int _speed, int _RAM) : processor(_processor), speed(_speed), RAM(_RAM) {}
+
+    // Размещение информации о классе-родителе на консоли
+    void displayInfo() {
+        cout << "MotherBoard Information:" << endl;
+        cout << "Processor Type: " << processor << endl;
+        cout << "Processor Speed: " << speed << " MHz" << endl;
+        cout << "RAM: " << RAM << " GB" << endl << endl;
+    }
+};
+
+// Класс потомок Computer
+class Computer : public Display, public MotherBoard {
+private:
+    char name[64];
+    int hard_disk;
+
+public:
+    // Конструктор с аргументами
+    Computer(char _type[], long _colors, int _x_resolution, int _y_resolution,
+             int _processor, int _speed, int _RAM,
+             char _name[], int _hard_disk)
+            : Display(_type, _colors, _x_resolution, _y_resolution),
+              MotherBoard(_processor, _speed, _RAM) {
+        strcpy(name, _name);
+        hard_disk = _hard_disk;
+    }
+
+    // Метод Show
+    void Show() {
+        MotherBoard::displayInfo();
+        Display::displayInfo();
+        cout << "Computer Information:" << endl;
+        cout << "Name: " << name << endl;
+        cout << "Hard Disk: " << hard_disk << " GB" << endl << endl;
+    }
+};
+
+int main() {
+    Computer pc("LCD", 16777216, 1920, 1080, 6, 3200, 16, "MyPC", 512);
+    pc.Show();
+    return 0;
+}
+
