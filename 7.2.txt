@@ -1,0 +1,79 @@
+// 7.2
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Figure {
+public:
+    virtual double area() const = 0;
+    virtual double perimeter() const = 0;
+    virtual ~Figure() {}
+};
+
+class Rectangle : public Figure {
+private:
+    double width;
+    double height;
+
+public:
+    Rectangle(double w, double h) : width(w), height(h) {}
+
+    double area() const override {
+        return width * height;
+    }
+
+    double perimeter() const override {
+        return 2 * (width + height);
+    }
+};
+
+class Circle : public Figure {
+private:
+    double radius;
+
+public:
+    Circle(double r) : radius(r) {}
+
+    double area() const override {
+        return 3.14159 * radius * radius;
+    }
+
+    double perimeter() const override {
+        return 2 * 3.14159 * radius;
+    }
+};
+
+class Trapezium : public Figure {
+private:
+    double a;
+    double b;
+    double height;
+
+public:
+    Trapezium(double sideA, double sideB, double h) : a(sideA), b(sideB), height(h) {}
+
+    double area() const override {
+        return (a + b) * height / 2;
+    }
+
+    double perimeter() const override {
+        return a + b + 2 * hypot((b - a) / 2, height);
+    }
+};
+
+int main() {
+    Rectangle rect(4, 5);
+    Circle circle(3);
+    Trapezium trapezium(3, 5, 4);
+
+    cout << "Rectangle Area: " << rect.area() << endl;
+    cout << "Rectangle Perimeter: " << rect.perimeter() << endl;
+
+    cout << "Circle Area: " << circle.area() << endl;
+    cout << "Circle Perimeter: " << circle.perimeter() << endl;
+
+    cout << "Trapezium Area: " << trapezium.area() << endl;
+    cout << "Trapezium Perimeter: " << trapezium.perimeter() << endl;
+
+    return 0;
+}

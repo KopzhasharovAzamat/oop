@@ -1,0 +1,53 @@
+// 7.3
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+class Currency {
+public:
+    virtual double toRuble(double amount) const = 0;
+    virtual void display(double amount) const = 0;
+    virtual ~Currency() {}
+};
+
+class Dollar : public Currency {
+public:
+    double toRuble(double amount) const override {
+        return amount * 90.95;
+    }
+
+    void display(double amount) const override {
+        cout << "$" << fixed << setprecision(2) << amount;
+    }
+};
+
+class Euro : public Currency {
+public:
+    double toRuble(double amount) const override {
+        return amount * 99.52;
+    }
+
+    void display(double amount) const override {
+        cout << "€" << fixed << setprecision(2) << amount;
+    }
+};
+
+int main() {
+
+    Dollar dollar;
+    Euro euro;
+
+    double amountInDollars = 1225;
+    double amountInEuros = 1500;
+
+    cout << "Amount in dollars: ";
+    dollar.display(amountInDollars);
+    cout << " = " << dollar.toRuble(amountInDollars) << " rubles" << endl;
+
+    cout << "Amount in euros: ";
+    euro.display(amountInEuros);
+    cout << " = " << euro.toRuble(amountInEuros) << " rubles" << endl;
+
+    return 0;
+}
+
