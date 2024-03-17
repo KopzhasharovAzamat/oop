@@ -1,0 +1,61 @@
+#include <iostream>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+// ANSI коды для цветов
+#define ANSI_COLOR_GREEN "\033[32m"
+#define ANSI_COLOR_RED "\033[31m"
+#define ANSI_COLOR_RESET "\033[0m"
+
+class ZenithGun {
+private:
+    static double p;
+
+public:
+    static void setProbability(double probability) {
+        p = probability;
+    }
+
+    static int shootDownPlane(int n) {
+        srand(time(nullptr));
+
+        for (int i = 0; i < n; i++) {
+            double random = static_cast<double>(rand()) / RAND_MAX;
+            if (random < p) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    static double estimatedProbability(int n) {
+        return 1 - pow(1 - p, n);
+    }
+};
+
+double ZenithGun::p = 0.0;
+
+int main() {
+    system("chcp 65001");
+    ZenithGun::setProbability(0.1);
+
+    int n;
+    cout << "Введите количество выстрелов (n): ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        int result = ZenithGun::shootDownPlane(i);
+        if (result == 1) {
+            cout << "Результат стрельбы: " << ANSI_COLOR_GREEN << "Цель уничтожена" << ANSI_COLOR_RESET << endl;
+        } else {
+            cout << "Результат стрельбы: " << ANSI_COLOR_RED << "Цель не сбита" << ANSI_COLOR_RESET << endl;
+        }
+
+        double estimated = ZenithGun::estimatedProbability(i);
+        cout << "Оценочная вероятность поражения цели: " << estimated << endl;
+    }
+
+    return 0;
+}
