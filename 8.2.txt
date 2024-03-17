@@ -1,0 +1,58 @@
+// 8.2
+#include <iostream>
+#include <random>
+
+template<typename T, size_t N>
+class ArrayPair {
+private:
+    T array1[N];
+    T array2[N];
+
+public:
+    ArrayPair() {
+        std::random_device rd;
+        std::mt19937 mersenne(rd());
+        for (size_t i = 0; i < N; ++i) {
+            array1[i] = mersenne();
+        }
+        for (size_t i = 0; i < N; ++i) {
+            array2[i] = mersenne();
+        }
+    }
+
+    void printArrays(){
+        std::cout << "Array #1: " << std::endl;
+        for (size_t i = 0; i < N; ++i) {
+            std::cout << array1[i] << " ";
+        }
+        std::cout << std::endl;
+        std::cout << "Array #2: " << std::endl;
+        for (size_t i = 0; i < N; ++i) {
+            std::cout << array2[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    T sum() const {
+        T total = 0;
+        for (size_t i = 0; i < N; ++i) {
+            total += array1[i];
+            total += array2[i];
+        }
+        return total;
+    }
+};
+
+int main() {
+    // Example usage with integer type
+    ArrayPair<int, 5> intArrays;
+    intArrays.printArrays();
+    std::cout << "Sum of integers: " << intArrays.sum() << std::endl;
+
+    // Example usage with double type
+    ArrayPair<double, 4> doubleArrays;
+    doubleArrays.printArrays();
+    std::cout << "Sum of doubles: " << doubleArrays.sum() << std::endl;
+
+    return 0;
+}
