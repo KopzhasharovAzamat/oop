@@ -1,0 +1,63 @@
+// 9.1
+// arrover1.cpp
+// демонстрация создания безопасного массива, проверяющего
+// свои индексы при использовании
+// используются отдельные функции для установки и получения значения
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+#include <process.h>        // для функции exit
+const int LIMIT = 100;      // размер массива
+///////////////////////////////////////////////////////////////
+
+class IndexOutOfBoundsException : public exception { // Создание пользовательского класса исключения
+public:
+    const char* what() const noexcept override {
+        return "Индекс находится вне границ!";
+    }
+};
+
+class safearray
+{
+private:
+    int arr [ LIMIT ];
+public:
+    // установка значения элемента массива
+    void putel(int n, int elvalue)
+    {
+        if ( n < 0 || n >= LIMIT ){
+            throw IndexOutOfBoundsException();
+        }
+        arr [ n ] = elvalue;
+    }
+    // получение значения элемента массива
+    int getel( int n ) const
+    {
+        if ( n < 0 || n >= LIMIT ) {
+            throw IndexOutOfBoundsException();
+        }
+        return arr [ n ];
+    }
+};
+///////////////////////////////////////////////////////////////
+int main( )
+{
+    system("chcp 65001");
+    safearray sa1;
+
+    // задаем значения элементов
+    for(int j = 0; j <= LIMIT; j++)
+        sa1.putel(j, j * 10);
+
+    // показываем элементы
+    for (int j = 0; j < LIMIT; j++) {
+        try {
+            int temp = sa1.getel(j);
+            cout << "Элемент " << j << " равен " << temp << endl;
+        } catch (const IndexOutOfBoundsException& e) {
+            cerr << "Ошибка: " << e.what() << endl; // Вывод сообщения об ошибке при возникновении исключения
+        }
+    }
+
+    return 0;
+}
